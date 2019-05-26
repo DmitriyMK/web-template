@@ -3,6 +3,11 @@
 	user-select: text;
 }
 
+// fix jumping for slide
+.slick-slider div {
+    transition: none;
+}
+
 .slick-prev,
 .slick-next {
 	top: 50%;
@@ -12,6 +17,8 @@
 	opacity: 1;
 	transition: opacity .3s linear;
 	z-index: 10;
+	font-size: 0;
+	line-height: 0;
 }
 
 

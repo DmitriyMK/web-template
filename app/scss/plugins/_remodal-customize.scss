@@ -40,3 +40,16 @@
         }
     }
 }
+
+
+.remodal-common {
+    border-radius: 10px;
+    background: #3b3b3d;
+    text-align: center;
+    padding: 30px;
+    max-width: 300px;
+}
+.remodal-common .remodal-close:before {
+    top: -30px!important; 
+    left: 0px!important;
+}
