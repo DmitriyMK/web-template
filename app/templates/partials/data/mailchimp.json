@@ -1,0 +1,11 @@
+{
+	"campaign_title": "",
+	"campaign_url": "",
+
+	"page_title": "*|MC:SUBJECT|*",
+
+	"email__title": "Welcome to Siteplus",
+
+	"publisher_name": "*|LIST:COMPANY|*",
+	"publisher_url": "*|LIST:URL|*"
+}

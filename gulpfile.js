@@ -16,42 +16,73 @@ let gulp           = require('gulp'),
 	notify         = require('gulp-notify'),
 	rsync          = require('gulp-rsync'),
 	groupmq        = require('gulp-group-css-media-queries'),
-	csscomb        = require('gulp-csscomb');
+	csscomb        = require('gulp-csscomb'),
+	nunjucksRender = require('gulp-nunjucks-render'),
+	data 		   = require('gulp-data');
 
 
-	gulp.task('browser-sync', function() {
-		browserSync({
-			server: {
-				baseDir: 'app'
-			},
-			notify: false,
-			// tunnel: true,
-			// tunnel: "projectmane", //Demonstration page: http://projectmane.localtunnel.me
-		});
+
+gulp.task('browser-sync', function() {
+	browserSync({
+		server: {
+			baseDir: 'app'
+		},
+		notify: false,
+		// tunnel: true,
+		// tunnel: "projectmane", //Demonstration page: http://projectmane.localtunnel.me
 	});
+});
+
+
+const globalData = {
+    main: require('./app/templates/partials/data/mailchimp.json')
+};
+
+
+gulp.task('nunjucks', function() {
+    return gulp.src('./app/templates/*.nunjucks')
+
+		.pipe(
+            data(function() {
+                return globalData;
+            })
+            .on('error', notify.onError())
+        )
+
+        .pipe(
+            nunjucksRender({
+                path: ['./app/templates/partials/']
+            })
+            .on('error', notify.onError())
+        )
+        .pipe(gulp.dest('./app/'));
+});
+
 
 
 gulp.task('common-js', function() {
 	return gulp.src([
-		'app/js/script.js',
+		'./app/js/script.js',
 		])
 	.pipe(concat('script.min.js'))
 	.pipe(uglify())
-	.pipe(gulp.dest('app/js'));
+	.pipe(gulp.dest('./app/js'));
 });
+
 
 gulp.task('js', ['common-js'], function() {
 	return gulp.src([
-		'app/js/script.min.js',
+		'./app/js/script.min.js',
 		])
 	.pipe(concat('scripts.min.js'))
 	// .pipe(uglify()) // Минимизировать весь js (на выбор)
-	.pipe(gulp.dest('app/js'))
+	.pipe(gulp.dest('./app/js'))
 	.pipe(browserSync.reload({ stream: true }));
 });
 
+
 gulp.task('sass', function() {
-	return gulp.src('app/scss/**/*.scss')
+	return gulp.src('./app/scss/**/*.scss')
 	.pipe(sass({outputStyle: 'expanded'}).on("error", notify.onError()))
 	.pipe(autoprefixer(['last 5 versions', '> 1%', 'ie 10']))
 	.pipe(csscomb())
@@ -59,25 +90,30 @@ gulp.task('sass', function() {
 	.pipe(rename({suffix: '.min', prefix : ''}))
 	.pipe(cleanCSS())
 	
-	.pipe(gulp.dest('app/css'))
+	.pipe(gulp.dest('./app/css'))
 	.pipe(browserSync.stream())
 });
 
-gulp.task('watch', ['sass', 'js', 'browser-sync'], function() {
-	gulp.watch('app/scss/**/*.scss', ['sass']);
-	gulp.watch(['libs/**/*.js', 'app/js/common.js'], ['js']);
-	gulp.watch('app/*.html', browserSync.reload);
+
+
+gulp.task('watch', ['nunjucks' ,'sass', 'js', 'browser-sync'], function() {
+
+	gulp.watch(['./app/templates/*.nunjucks' , './app/templates/**/*.nunjucks'],['nunjucks']); 
+	gulp.watch('./app/scss/**/*.scss', ['sass']);
+	gulp.watch(['libs/**/*.js', './app/js/common.js'], ['js']);
+	gulp.watch('./app/*.html', browserSync.reload);
 });
 
+
 gulp.task('imagemin', function() {
-	return gulp.src('app/img/**/*')
+	return gulp.src('./app/img/**/*')
 	.pipe(cache(imagemin())) // Cache Images
 	.pipe(gulp.dest('dist/img')); 
 });
 
 gulp.task('svgmin', () => {
 
-    return gulp.src('app/img/icons/*.svg')
+    return gulp.src('./app/img/icons/*.svg')
         .pipe(svgo())
         .pipe(gulp.dest('dist/img/icons/'));
 });
@@ -85,20 +121,20 @@ gulp.task('svgmin', () => {
 gulp.task('build', ['removedist', 'imagemin', 'svgmin', 'sass', 'js'], function() {
 
 	var buildFiles = gulp.src([
-		'app/*.html',
-		'app/.htaccess',
+		'./app/*.html',
+		'./app/.htaccess',
 		]).pipe(gulp.dest('dist'));
 
 	var buildCss = gulp.src([
-		'app/css/main.min.css',
+		'./app/css/main.min.css',
 		]).pipe(gulp.dest('dist/css'));
 
 	var buildJs = gulp.src([
-		'app/js/scripts.min.js',
+		'./app/js/scripts.min.js',
 		]).pipe(gulp.dest('dist/js'));
 
 	var buildFonts = gulp.src([
-		'app/fonts/**/*',
+		'./app/fonts/**/*',
 		]).pipe(gulp.dest('dist/fonts'));
 
 });
@@ -147,7 +183,7 @@ gulp.task('default', ['watch']);
 var svgSprite = require('gulp-svg-sprite');
 
 gulp.task('svgSprite', function () {
-    return gulp.src('app/img/icons/*.svg') // svg files for sprite
+    return gulp.src('./app/img/icons/*.svg') // svg files for sprite
         .pipe(svgSprite({
                 mode: {
                     stack: {
@@ -156,5 +192,5 @@ gulp.task('svgSprite', function () {
                 },
             }
         ))
-        .pipe(gulp.dest('app/img/icons/')); 
+        .pipe(gulp.dest('./app/img/icons/')); 
 });
