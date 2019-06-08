@@ -1,7 +1,0 @@
-<div class="container">
-		<p>{{ email__title }}</p>
-		<p>All rights reserved.</p>
-</div>
-
-
-

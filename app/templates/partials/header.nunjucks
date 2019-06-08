@@ -1,0 +1,15 @@
+<header class="header">
+    <div class="wrapper">
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Iure dolores, alias at explicabo enim voluptatum adipisci.
+        Aliquam, aliquid? Nulla quo fugiat voluptatum perferendis maiores! Autem consequatur magnam numquam natus! Qui.
+        </div>
+
+        <button class="burger">
+        <h2 class="offscreen">Навигационное меню</h2>
+            <i></i>
+        </button>
+
+
+    </div>
+</header>

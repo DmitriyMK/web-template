@@ -35,7 +35,7 @@ gulp.task('browser-sync', function() {
 
 
 const globalData = {
-    main: require('./app/templates/partials/data/mailchimp.json')
+    main: require('./app/templates/partials/data/globalData.json')
 };
 
 
