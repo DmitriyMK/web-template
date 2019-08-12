@@ -183,14 +183,38 @@ gulp.task('default', ['watch']);
 var svgSprite = require('gulp-svg-sprite');
 
 gulp.task('svgSprite', function () {
-    return gulp.src('./app/img/icons/*.svg') // svg files for sprite
-        .pipe(svgSprite({
-                mode: {
-                    stack: {
-                        sprite: "../sprite.svg"  //sprite file name
-                    }
-                },
-            }
-        ))
-        .pipe(gulp.dest('./app/img/icons/')); 
+	return gulp.src('./app/img/icons/*.svg')
+		.pipe(svgSprite({
+			mode: {
+				stack: {
+					sprite: "../sprite.svg"
+				}
+			},
+		}))
+		.pipe(svgmin({
+            plugins: [
+				{
+					removeComments: true
+				},
+				{
+					removeMetadata: true
+				},
+				{
+					removeEditorsNSData: true
+				},
+				{
+					removeAttrs: { attrs: 'data.*' }
+				},
+				{
+					removeStyleElement: true
+				},
+				{
+					removeDesc: true
+				},
+				{
+					cleanupIDs: false
+				}
+            ]
+        }))
+		.pipe(gulp.dest('./app/img/icons/sprite'))
 });
