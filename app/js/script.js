@@ -1,39 +1,126 @@
 // $(document).ready(function() {
 
 
-  /*  if (document.documentElement.clientWidth > 1200) {
+//   if (document.documentElement.clientWidth > 1240) {
 
 
-    new WOW().init();
+//     // IE FALSE
+//     var isIE = false;
+//     var ua = window.navigator.userAgent;
+//     var old_ie = ua.indexOf('MSIE ');
+//     var new_ie = ua.indexOf('Trident/');
 
-      $("body").niceScroll({
-        scrollspeed: 60,
-        mousescrollstep: 60,
-        smoothscroll: true,
-        cursorwidth: 8,
-        cursorborder: 0,
-        cursorcolor: '#ff4200',
-        cursorborderradius: 2,
-        autohidemode: true,
-        horizrailenabled: false,
-        cursoropacitymin: 1,
-        background: false,
-        zindex: "9999"
-      });
+//     if ((old_ie > -1) || (new_ie > -1)) {
+//       isIE = true;
+//     }
 
-      $('html').addClass('no-overflow-y');
+//     if (!isIE) {
 
-    };*/
+//     }
 
 
-    // $(".scrolling__link").on("click", function (event) {
-    //   event.preventDefault();
-    //   var id  = $(this).attr('href'),
+//     // GSAP MOUSE ROTATE ANIMATION
+//     $(document).ready(function () {
 
-    //   top = $(id).offset().top;
+//       var cardWrap = document.getElementsByClassName('saltImg');
+
+
+//       document.body.addEventListener('mousemove', cursorPositionHandler);
+
+//       function cursorPositionHandler(e) {
+//         var decimalX = e.clientX / window.innerWidth - 0.5;
+//         var decimalY = e.clientY / window.innerHeight - 0.5;
+
+//         TweenMax.to(cardWrap, 0.5, {
+//           rotationY: 20 * decimalX,
+//           rotationX: -20 * decimalY,
+//           ease: Quad.easeOut,
+//           transformPerspective: 500,
+//           transformOrigin: "center"
+//         });
+//       }
+//     });
+
+
+//     // GSAP ANIMATION
+//     $('[data-scrollmagic1]').each(function(index, elem) {
+
+//   // Init ScrollMagic Controller
+//   var scrollMagicController = new ScrollMagic();
+
+//   // Create Animations
+//   var title = $(elem).find('.proposal__title');
+//   var subtitle = $(elem).find('.proposal__subtitle');
+//   var list1 = $(elem).find('.proposal__item-left');
+//   var list2 = $(elem).find('.proposal__item-right');
+//   var img1 = $(elem).find('.proposal__img1');
+//   var img2 = $(elem).find('.proposal__img2');
+//   var titles1 = $(elem).find('.titles1');
+//   var titles2 = $(elem).find('.titles2');
+
+
+//   var tl = new TimelineMax({
+//     pause: true
+//   });
+
+
+//   tl.add("start") // add timeline label
+
+
+//   .fromTo(title, 0.6, {y: '80px', opacity: 0}, {y: 0, opacity: 1, ease: Power4.easeOut}, 0.4)
+//   .fromTo(subtitle, 0.8, {y: '80px', opacity: 0}, {y: 0, opacity: 1, ease: Power4.easeOut}, 0.6)
+//   .fromTo(img1, 1, {x: '60px', opacity: 0}, {x: 0, opacity: 1, ease: Power4.easeOut}, 1)
+//   .fromTo(img2, 1.2, {x: '60px', opacity: 0}, {x: 0, opacity: 1, ease: Power4.easeOut}, 1.4)
+//   .fromTo(list1, 1.2, {x: '80px', opacity: 0}, {x: 0, opacity: 1,  ease: Power4.easeOut}, 1.2)
+//   .fromTo(list1, 1.6, {y: '60px'}, {y: 0,  ease: Power4.easeOut}, 1.6)
+//   .fromTo(list2, 1.4, {x: '80px', opacity: 0}, {x: 0, opacity: 1,  ease: Power4.easeOut}, 1.4)
+//   .fromTo(list2, 1.8, {y: '60px'}, {y: 0,  ease:Power4.easeOut}, 1.6)
+//   .fromTo(titles1, 1.6, {y: '80px', opacity: 0}, {y: 0, opacity: 1, ease: Power4.easeOut}, 1.6)
+//   .fromTo(titles2, 1.8, {y: '80px', opacity: 0}, {y: 0, opacity: 1, ease: Power4.easeOut}, 1.8)
+
+
+//   // Create the Scene and trigger when visible
+//   var scene = new ScrollScene({
+//     triggerElement: elem,
+//     reverse: false,
+//     offset: 0
+//   })
+
+
+//   .setTween(tl)
+//   .addTo(scrollMagicController);
+//   scene.addIndicators();
+//     });
+
+//   };
+// });
+
+
+
+
+// var options = {
+//   paths: '#round',
+//   pointsNumber: 12,
+//   maxDistance: 50,
+//   color: '#eef3f5',
+// };
+
+
+// var jelly = new Jelly('.jelly', options);
+
+
+// objectFitImages();
+
+
+
+  // $(".scrolling__link").on("click", function (event) {
+  //   event.preventDefault();
+  //   var id  = $(this).attr('href'),
+
+  //   top = $(id).offset().top;
       
-    //   $('body,html').animate({scrollTop: top}, 1000);
-    // });
+  //   $('body,html').animate({scrollTop: top}, 1000);
+  // });
 
 
   // var position = $("#works").offset();
@@ -50,36 +137,6 @@
   // var bLazy = new Blazy();
 
   // $('.phone-mask').mask('+38(999)999-99-99');
-
-
-  /*  $(".js-video-button").modalVideo({
-      youtube: {
-        autoplay: 1,
-        nocookie: false,
-        cc_load_policy: 1,
-        color: null,
-        controls: 1,
-        disablekb: 0,
-        enablejsapi: 0,
-        end: null,
-        fs: 1,
-        h1: null,
-        iv_load_policy: 1,
-        list: null,
-        listType: null,
-        loop: 0,
-        modestbranding: null,
-        origin: null,
-        playlist: null,
-        playsinline: null,
-        rel: 0,
-        showinfo: 1,
-        start: 0,
-        wmode: 'transparent',
-        theme: 'dark'
-
-      }
-    });*/
 
 
 
