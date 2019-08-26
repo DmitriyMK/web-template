@@ -24,12 +24,9 @@
 		<img class="carousel__img" src="./img/photo/0carousel/5_2560.jpg" alt="Фотограф - Елена Москвичева">
 	</picture> -->
 
-
 <div class="mainwrap">
 
-
 	{% include "header.nunjucks" %}
-
 
 	<main class="main">
 
@@ -53,7 +50,6 @@
 			</form>
 		</div> -->
 
-
 		<!-- <div class="remodal remodal-common" data-remodal-id="modal-thanks">
 			<button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
 			<p class="thanks__title">Благодарим Вас!</p>
@@ -62,16 +58,11 @@
 
 	</main>
 
-
 	{% include "footer.nunjucks" %}
 
-	
 </div>
 
 <link rel="stylesheet" href="./css/main.min.css">
-
-
-
 
 <script src="../js/libs/jquery-2.2.4.min.js"></script>
 <script src="../js/libs/ofi.min.js"></script>

@@ -1,28 +1,28 @@
-let gulp           = require('gulp'),
-	gutil          = require('gulp-util' ),
-	sass           = require('gulp-sass'),
-	browserSync    = require('browser-sync'),
-	concat         = require('gulp-concat'),
-	uglify         = require('gulp-uglify'),
-	cleanCSS       = require('gulp-clean-css'),
-	rename         = require('gulp-rename'),
-	del            = require('del'),
-	imagemin       = require('gulp-imagemin'),
-	svgo           = require('gulp-svgo'),
-	svgmin 		   = require('gulp-svgmin'),
-	cache          = require('gulp-cache'),
-	autoprefixer   = require('gulp-autoprefixer'),
-	ftp            = require('vinyl-ftp'),
-	notify         = require('gulp-notify'),
-	rsync          = require('gulp-rsync'),
-	groupmq        = require('gulp-group-css-media-queries'),
-	csscomb        = require('gulp-csscomb'),
+let gulp = require('gulp'),
+	gutil = require('gulp-util'),
+	sass = require('gulp-sass'),
+	browserSync = require('browser-sync'),
+	concat = require('gulp-concat'),
+	uglify = require('gulp-uglify'),
+	cleanCSS = require('gulp-clean-css'),
+	rename = require('gulp-rename'),
+	del = require('del'),
+	imagemin = require('gulp-imagemin'),
+	svgo = require('gulp-svgo'),
+	svgmin = require('gulp-svgmin'),
+	cache = require('gulp-cache'),
+	autoprefixer = require('gulp-autoprefixer'),
+	ftp = require('vinyl-ftp'),
+	notify = require('gulp-notify'),
+	rsync = require('gulp-rsync'),
+	groupmq = require('gulp-group-css-media-queries'),
+	csscomb = require('gulp-csscomb'),
 	nunjucksRender = require('gulp-nunjucks-render'),
-	data 		   = require('gulp-data');
+	data = require('gulp-data');
 
 
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', function () {
 	browserSync({
 		server: {
 			baseDir: 'app'
@@ -35,144 +35,144 @@ gulp.task('browser-sync', function() {
 
 
 const globalData = {
-    main: require('./app/templates/partials/data/globalData.json')
+	main: require('./app/templates/partials/data/globalData.json')
 };
 
 
-gulp.task('nunjucks', function() {
-    return gulp.src('./app/templates/*.nunjucks')
+gulp.task('nunjucks', function () {
+	return gulp.src('./app/templates/*.nunjucks')
 
 		.pipe(
-            data(function() {
-                return globalData;
-            })
-            .on('error', notify.onError())
-        )
+			data(function () {
+				return globalData;
+			})
+				.on('error', notify.onError())
+		)
 
-        .pipe(
-            nunjucksRender({
-                path: ['./app/templates/partials/']
-            })
-            .on('error', notify.onError())
-        )
-        .pipe(gulp.dest('./app/'));
+		.pipe(
+			nunjucksRender({
+				path: ['./app/templates/partials/']
+			})
+				.on('error', notify.onError())
+		)
+		.pipe(gulp.dest('./app/'));
 });
 
 
 
-gulp.task('common-js', function() {
+gulp.task('common-js', function () {
 	return gulp.src([
 		'./app/js/script.js',
-		])
-	.pipe(concat('script.min.js'))
-	.pipe(uglify())
-	.pipe(gulp.dest('./app/js'));
+	])
+		.pipe(concat('script.min.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest('./app/js'));
 });
 
 
-gulp.task('js', ['common-js'], function() {
+gulp.task('js', ['common-js'], function () {
 	return gulp.src([
 		'./app/js/script.min.js',
-		])
-	.pipe(concat('scripts.min.js'))
-	// .pipe(uglify()) // Минимизировать весь js (на выбор)
-	.pipe(gulp.dest('./app/js'))
-	.pipe(browserSync.reload({ stream: true }));
+	])
+		.pipe(concat('scripts.min.js'))
+		// .pipe(uglify()) // Минимизировать весь js (на выбор)
+		.pipe(gulp.dest('./app/js'))
+		.pipe(browserSync.reload({ stream: true }));
 });
 
 
-gulp.task('sass', function() {
+gulp.task('sass', function () {
 	return gulp.src('./app/scss/**/*.scss')
-	.pipe(sass({outputStyle: 'expanded'}).on("error", notify.onError()))
-	.pipe(autoprefixer(['last 5 versions', '> 1%', 'ie 10']))
-	.pipe(csscomb())
-	.pipe(groupmq())
-	.pipe(rename({suffix: '.min', prefix : ''}))
-	.pipe(cleanCSS())
-	
-	.pipe(gulp.dest('./app/css'))
-	.pipe(browserSync.stream())
+		.pipe(sass({ outputStyle: 'expanded' }).on("error", notify.onError()))
+		.pipe(autoprefixer(['last 5 versions', '> 1%', 'ie 10']))
+		.pipe(csscomb())
+		.pipe(groupmq())
+		.pipe(rename({ suffix: '.min', prefix: '' }))
+		.pipe(cleanCSS())
+
+		.pipe(gulp.dest('./app/css'))
+		.pipe(browserSync.stream())
 });
 
 
 
-gulp.task('watch', ['nunjucks' ,'sass', 'js', 'browser-sync'], function() {
+gulp.task('watch', ['nunjucks', 'sass', 'js', 'browser-sync'], function () {
 
-	gulp.watch(['./app/templates/*.nunjucks' , './app/templates/**/*.nunjucks'],['nunjucks']); 
+	gulp.watch(['./app/templates/*.nunjucks', './app/templates/**/*.nunjucks'], ['nunjucks']);
 	gulp.watch('./app/scss/**/*.scss', ['sass']);
 	gulp.watch(['libs/**/*.js', './app/js/common.js'], ['js']);
 	gulp.watch('./app/*.html', browserSync.reload);
 });
 
 
-gulp.task('imagemin', function() {
+gulp.task('imagemin', function () {
 	return gulp.src('./app/img/**/*')
-	.pipe(cache(imagemin())) // Cache Images
-	.pipe(gulp.dest('dist/img')); 
+		.pipe(cache(imagemin())) // Cache Images
+		.pipe(gulp.dest('dist/img'));
 });
 
 gulp.task('svgmin', () => {
 
-    return gulp.src('./app/img/icons/*.svg')
-        .pipe(svgo())
-        .pipe(gulp.dest('dist/img/icons/'));
+	return gulp.src('./app/img/icons/*.svg')
+		.pipe(svgo())
+		.pipe(gulp.dest('dist/img/icons/'));
 });
 
-gulp.task('build', ['removedist', 'imagemin', 'svgmin', 'sass', 'js'], function() {
+gulp.task('build', ['removedist', 'imagemin', 'svgmin', 'sass', 'js'], function () {
 
 	var buildFiles = gulp.src([
 		'./app/*.html',
 		'./app/.htaccess',
-		]).pipe(gulp.dest('dist'));
+	]).pipe(gulp.dest('dist'));
 
 	var buildCss = gulp.src([
 		'./app/css/main.min.css',
-		]).pipe(gulp.dest('dist/css'));
+	]).pipe(gulp.dest('dist/css'));
 
 	var buildJs = gulp.src([
 		'./app/js/scripts.min.js',
-		]).pipe(gulp.dest('dist/js'));
+	]).pipe(gulp.dest('dist/js'));
 
 	var buildFonts = gulp.src([
 		'./app/fonts/**/*',
-		]).pipe(gulp.dest('dist/fonts'));
+	]).pipe(gulp.dest('dist/fonts'));
 
 });
 
-gulp.task('deploy', function() {
+gulp.task('deploy', function () {
 
 	var conn = ftp.create({
-		host:      'hostname.com',
-		user:      'username',
-		password:  'userpassword',
-		parallel:  10,
+		host: 'hostname.com',
+		user: 'username',
+		password: 'userpassword',
+		parallel: 10,
 		log: gutil.log
 	});
 
 	var globs = [
-	'dist/**',
-	'dist/.htaccess',
+		'dist/**',
+		'dist/.htaccess',
 	];
-	return gulp.src(globs, {buffer: false})
-	.pipe(conn.dest('/path/to/folder/on/server'));
+	return gulp.src(globs, { buffer: false })
+		.pipe(conn.dest('/path/to/folder/on/server'));
 
 });
 
-gulp.task('rsync', function() {
+gulp.task('rsync', function () {
 	return gulp.src('dist/**')
-	.pipe(rsync({
-		root: 'dist/',
-		hostname: 'username@yousite.com',
-		destination: 'yousite/public_html/',
-		// include: ['*.htaccess'], // Скрытые файлы, которые необходимо включить в деплой
-		recursive: true,
-		archive: true,
-		silent: false,
-		compress: true
-	}));
+		.pipe(rsync({
+			root: 'dist/',
+			hostname: 'username@yousite.com',
+			destination: 'yousite/public_html/',
+			// include: ['*.htaccess'], // Скрытые файлы, которые необходимо включить в деплой
+			recursive: true,
+			archive: true,
+			silent: false,
+			compress: true
+		}));
 });
 
-gulp.task('removedist', function() { return del.sync('dist'); });
+gulp.task('removedist', function () { return del.sync('dist'); });
 gulp.task('clearcache', function () { return cache.clearAll(); });
 
 gulp.task('default', ['watch']);
@@ -192,7 +192,7 @@ gulp.task('svgSprite', function () {
 			},
 		}))
 		.pipe(svgmin({
-            plugins: [
+			plugins: [
 				{
 					removeComments: true
 				},
@@ -214,7 +214,7 @@ gulp.task('svgSprite', function () {
 				{
 					cleanupIDs: false
 				}
-            ]
-        }))
+			]
+		}))
 		.pipe(gulp.dest('./app/img/icons/sprite'))
 });
